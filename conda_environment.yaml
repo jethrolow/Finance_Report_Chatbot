@@ -1,4 +1,4 @@
-name: finance_chatbot_5
+name: fr_chatbot
 channels:
   - defaults
 dependencies:

@@ -13,14 +13,15 @@ RUN conda update -n base -c defaults conda
 WORKDIR /app
 
 # run gitclone to copy in the latest code from Github
-RUN git clone https://github.com/streamlit/streamlit-example.git .
+RUN git clone https://github.com/jethrolow/Finance_Report_Chatbot.git .
 
 # create the conda environment using the environment.yaml file
-RUN conda env create -f 
+RUN conda env create -f conda_environment.yaml
 
 #expose port for access
 EXPOSE 8501
 
+#check connection
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
 ENTRYPOINT ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
