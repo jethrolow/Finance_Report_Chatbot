@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3 AS build
+FROM continuumio/miniconda3
 
 #update and install required packages
 RUN apt-get update && apt-get install -y \
@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     software-properties-common \
     git \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && touch "~/.bashrc"
 RUN conda update -n base -c defaults conda
 
 # specify the working directory
@@ -16,7 +17,10 @@ WORKDIR /app
 RUN git clone https://github.com/jethrolow/Finance_Report_Chatbot.git .
 
 # create the conda environment using the environment.yaml file
-RUN conda env create -f conda_environment.yaml
+RUN conda env create -f conda_environment.yaml && \
+    conda init bash && \
+    conda clean -a -y && \
+    echo "source activate fr_chatbot" >> "~/.bashrc"
 
 #expose port for access
 EXPOSE 8501
@@ -24,4 +28,4 @@ EXPOSE 8501
 #check connection
 HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health
 
-ENTRYPOINT ["streamlit", "run", "streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+ENTRYPOINT ["/bin/bash", "./entrypoint.sh"]
