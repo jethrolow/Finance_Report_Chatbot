@@ -1,11 +1,13 @@
 steps:
 # Build the container image
 - name: "gcr.io/cloud-builders/docker"
+  entrypoint: 'bash'
   args:
   - build
   - "--tag=gcr.io/temus-fs-chatbot/chatbot"
   - "--file=./Docker/frontend.Dockerfile"
   - .
+  secretEnv: ['OPENAI_API_KEY']
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   args:
@@ -21,7 +23,6 @@ steps:
   - '--image=gcr.io/temus-fs-chatbot/chatbot'
   - "--region=asia-south1"
   - "--allow-unauthenticated"
-  secretEnv: ['OPENAI_API_KEY']
 images:
 - gcr.io//temus-fs-chatbot/chatbot
 
