@@ -19,7 +19,7 @@ steps:
   - 'deploy'
   - 'test2' #service name
   - '--image=gcr.io/temus-fs-chatbot/chatbot'
-  - "--region=asia-southeast1-a"
+  - "--region=asia-south1"
   - "--allow-unauthenticated"
   secretEnv: ['OPENAI_API_KEY']
 images:
