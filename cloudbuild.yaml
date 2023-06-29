@@ -3,6 +3,7 @@ steps:
 - name: "gcr.io/cloud-builders/docker"
   entrypoint: 'bash'
   args:
+  - "-c"
   - build
   - "--tag=gcr.io/temus-fs-chatbot/chatbot"
   - "--file=./Docker/frontend.Dockerfile"
