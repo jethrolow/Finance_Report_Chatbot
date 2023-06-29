@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN git clone https://github.com/jethrolow/Finance_Report_Chatbot.git .
 
+ENV OPENAI_API_KEY = $OPENAI_API_KEY 
 
 RUN pip3 install -r requirements.txt
 
