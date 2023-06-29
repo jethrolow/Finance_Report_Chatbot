@@ -1,0 +1,33 @@
+steps:
+# Build the container image
+- name: "gcr.io/cloud-builders/docker"
+  args:
+  - build
+  - "--tag=gcr.io/temus-fs-chatbot/chatbot"
+  - "--file=./Docker/frontend.Dockerfile"
+  - .
+# Push the container image to Container Registry
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+  - 'push'
+  - 'gcr.io/temus-fs-chatbot/chatbot'
+# Deploy container image to Cloud Run
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  entrypoint: gcloud
+  args:
+  - 'run'
+  - 'deploy'
+  - 'test2' #service name
+  - '--image=gcr.io/temus-fs-chatbot/chatbot'
+  - "--region=asia-southeast1-a"
+  - "--allow-unauthenticated"
+  secretEnv: ['OPENAI_API_KEY']
+images:
+- gcr.io//temus-fs-chatbot/chatbot
+
+availableSecrets:
+  secretManager:
+  - versionName: projects/126083471069/secrets/openai_api/versions/2
+    env: 'OPENAI_API_KEY'
+
+    
