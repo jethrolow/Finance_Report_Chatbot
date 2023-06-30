@@ -18,10 +18,12 @@ steps:
   args:
   - 'run'
   - 'deploy'
-  - 'test2' #service name
+  - 'test3' #service name
   - '--image=gcr.io/temus-fs-chatbot/chatbot'
   - "--region=asia-south1"
   - "--allow-unauthenticated"
+  env:
+    - 'OPENAI_API_KEY=${OPENAI_API_KEY}'
 images:
 - gcr.io//temus-fs-chatbot/chatbot
 
