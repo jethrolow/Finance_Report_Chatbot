@@ -3,14 +3,14 @@ steps:
 - name: "gcr.io/cloud-builders/docker"
   args:
   - "build"
-  - "--tag=gcr.io/temus-fs-chatbot/chatbot"
+  - "--tag=gcr.io/temus-fs-chatbot/chatbot:$COMMIT_SHA'"
   - "--file=./Docker/frontend.Dockerfile"
   - .
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   args:
   - 'push'
-  - 'gcr.io/temus-fs-chatbot/chatbot'
+  - 'gcr.io/temus-fs-chatbot/chatbot:$COMMIT_SHA''
 # Deploy container image to Cloud Run
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
@@ -18,7 +18,7 @@ steps:
   - 'run'
   - 'deploy'
   - 'test2' #service name
-  - '--image=gcr.io/temus-fs-chatbot/chatbot'
+  - '--image=gcr.io/temus-fs-chatbot/chatbot:$COMMIT_SHA'
   - "--region=asia-south1"
   - "--allow-unauthenticated"
  # secretEnv: ["OPENAI_API_KEY"]
