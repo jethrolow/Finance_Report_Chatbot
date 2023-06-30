@@ -4,6 +4,7 @@ steps:
   args:
   - "build"
   - "--tag=gcr.io/temus-fs-chatbot/chatbot:$COMMIT_SHA"
+  - "--tag=gcr.io/temus-fs-chatbot/chatbot:latest"
   - "--file=./Docker/frontend.Dockerfile"
   - .
 # Push the container image to Container Registry
