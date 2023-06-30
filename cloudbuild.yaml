@@ -6,7 +6,6 @@ steps:
   - "--tag=gcr.io/temus-fs-chatbot/chatbot"
   - "--file=./Docker/frontend.Dockerfile"
   - .
-  secretEnv: ['OPENAI_API_KEY']
 # Push the container image to Container Registry
 - name: 'gcr.io/cloud-builders/docker'
   args:
@@ -18,18 +17,15 @@ steps:
   args:
   - 'run'
   - 'deploy'
-  - 'test3' #service name
+  - 'test2' #service name
   - '--image=gcr.io/temus-fs-chatbot/chatbot'
   - "--region=asia-south1"
   - "--allow-unauthenticated"
-  env:
-    - 'OPENAI_API_KEY=${OPENAI_API_KEY}'
+ # secretEnv: ["OPENAI_API_KEY"]
 images:
 - gcr.io//temus-fs-chatbot/chatbot
 
-availableSecrets:
-  secretManager:
-  - versionName: projects/126083471069/secrets/openai_api/versions/2
-    env: 'OPENAI_API_KEY'
-
-    
+# availableSecrets:
+# secretManager:
+# - versionName: projects/temus-fs-chatbot/secrets/openai_api/versions/latest
+#   env: 'OPENAI_API_KEY'
