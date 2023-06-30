@@ -23,9 +23,9 @@ steps:
   - "--region=us-central1"
   - "--allow-unauthenticated"
  # secretEnv: ["OPENAI_API_KEY"]
-images:
-- gcr.io//temus-fs-chatbot/chatbot:$COMMIT_SHA
-- gcr.io//temus-fs-chatbot/chatbot:latest
+# images:
+# - gcr.io//temus-fs-chatbot/chatbot:$COMMIT_SHA
+# - gcr.io//temus-fs-chatbot/chatbot:latest
 
 # availableSecrets:
 # secretManager:
