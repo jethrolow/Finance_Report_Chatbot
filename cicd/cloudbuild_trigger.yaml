@@ -17,7 +17,7 @@ steps:
   args:
   - 'run'
   - 'deploy'
-  - 'streamlit_deploy' #service name
+  - 'streamlit' #service name
   - '--image=gcr.io/temus-fs-chatbot/chatbot:$COMMIT_SHA'
   - "--region=us-central1"
   - "--allow-unauthenticated"
