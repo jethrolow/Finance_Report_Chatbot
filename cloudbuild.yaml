@@ -17,9 +17,9 @@ steps:
   args:
   - 'run'
   - 'deploy'
-  - 'test2' #service name
+  - 'streamlit_deploy' #service name
   - '--image=gcr.io/temus-fs-chatbot/chatbot:$COMMIT_SHA'
-  - "--region=asia-south1"
+  - "--region=asia-southeast1"
   - "--allow-unauthenticated"
  # secretEnv: ["OPENAI_API_KEY"]
 images:
