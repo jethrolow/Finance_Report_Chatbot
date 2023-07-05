@@ -1,50 +1,60 @@
 import streamlit as st
 import os
 from dotenv import load_dotenv
-from chatbot import get_text_from_pdf, chunk_text_from_whole_text, convert_text_vectorstore, get_conversation_chain, handle_user_input
-
-# testing trigger
-
+from chatbot import *
 
 def main():
     load_dotenv()
 
     st.set_page_config(
-    page_title="Financial Statements Q&A Chatbot!",
+    page_title="Financial Reports Q&A Chatbot!",
     page_icon="owl",
-    layout="centered",
+    layout= "wide",
     initial_sidebar_state="expanded",
     )
     if "conversation" not in st.session_state:
         st.session_state.conversation = None
-    st.header(":owl: Financial Statements Q&A Chatbot! :owl:")
-    col1, col2= st.columns(2)
+    if "history" not in st.session_state:
+        st.session_state.history = []
+    if "history_model" not in st.session_state:
+        st.session_state.history_model = []
+    if "source" not in st.session_state:
+        st.session_state.source = []
+    if "is_finance_report" not in st.session_state:
+        st.session_state.is_finance_report = ""
+    if "final_store" not in st.session_state:
+        st.session_state.final_store = None
 
+    st.markdown("<h1 style='text-align: center; color: white;'>Financial Reports Q&A Chatbot!</h1>", unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
 
-    
     with col1:
-        st.header("Chat")
-        user_question = st.text_input("Ask me a question relating to the financial statements")
-        if user_question:
-            response = handle_user_input(user_question, st.session_state.conversation)
-            # st.write(type(response['chat_history'][0]))
-            st.write(response['answer'])
 
+        st.header("Chat")
+        
         with st.sidebar:
-            st.subheader("Model Selection")
-            model_type = st.radio(label = "Please choose the LLM model to run chatbot", options = ('OpenAI',"HuggingFace"))
             st.subheader("Upload your financial statements")
-            fs_pdf_docs = st.file_uploader("You can upload more than one financial statement documents. Please ensure file is in PDF format.", accept_multiple_files = True)
+            fr_pdf_docs = st.file_uploader("You can upload more than one financial statement documents. Please ensure file is in PDF format.", accept_multiple_files = True)
 
             if st.button("OK"):
-                with st.spinner("In progress..."):
-                    whole_text = get_text_from_pdf(fs_pdf_docs=fs_pdf_docs)
-                    chunked_text = chunk_text_from_whole_text(whole_text)
-                    vectorstore = convert_text_vectorstore(chunked_text)
-                    if vectorstore is not None:
-                        st.write("Conversion to vectorstore completed!")
-                    st.session_state.conversation = get_conversation_chain(vectorstore)
-                    
+                with st.spinner("Reading your document..."):
+                    final_store = preprocessing(fr_pdf_docs= fr_pdf_docs)
+                    if final_store is not None:
+                        st.write("Ready! You can start chatting with your financial reports!")
+            if st.session_state.is_finance_report is not None:
+                st.write(st.session_state.is_finance_report)
+
+        user_question = st.text_input("Ask me a question relating to the financial statements", key = "input_text", on_change = generate_answer)
+
+        for chat in st.session_state.history:
+            st_message(**chat)
+
+    with col2:
+        st.header("Source")
+        st.write("""This is the source document for the latest response from the ChatBot.
+        Inspect the source document to ensure factual truth of the response""")
+        if st.session_state.source:
+            st.write(st.session_state.source)
 
 if __name__ == '__main__':
     main()
