@@ -44,8 +44,7 @@ def main():
             if st.session_state.is_finance_report is not None:
                 st.write(st.session_state.is_finance_report)
 
-        user_question = st.text_input("Ask me a question relating to the financial statements", key = "input_text", on_change = generate_answer)
-
+        st.text_input("Ask me a question relating to the financial statements", key = "input_text", on_change = generate_answer)
         for chat in st.session_state.history:
             st_message(**chat)
 
