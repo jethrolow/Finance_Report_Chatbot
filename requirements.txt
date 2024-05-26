@@ -14,5 +14,7 @@ openai==0.27.8
 openapi-schema-pydantic==1.2.4
 prompt-toolkit==3.0.38
 tiktoken==0.4.0
-tqdm==4.65.0
+tqdm
 streamlit-chat==0.1.1
+llama-index==0.10.39
+llama-parse==0.4.3
